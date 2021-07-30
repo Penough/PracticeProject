@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.ListNode;
 import org.example.model.TreeNode;
 import org.springframework.boot.web.embedded.tomcat.TomcatReactiveWebServerFactory;
 
@@ -15,12 +16,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        TreeNode node1 = new TreeNode(15);
-        TreeNode node2 = new TreeNode(7);
-        TreeNode node3 = new TreeNode(20, node1, node2);
-        TreeNode node4 = new TreeNode(9);
-        TreeNode root = new TreeNode(3, node3, node4);
-
-        System.err.println(TreePracticeUtil.levelOrder(root));
+//        ListNode lsn = new ListNode(1, new ListNode(2, new ListNode(3, null)));
+        System.err.println(JzPracticeUtil.NumberOf1(10));
     }
 }
