@@ -17,6 +17,6 @@ public class App
     public static void main( String[] args )
     {
 //        ListNode lsn = new ListNode(1, new ListNode(2, new ListNode(3, null)));
-        System.err.println(JzPracticeUtil.NumberOf1(10));
+        System.err.println(JzPracticeUtil.Power(2,-3));
     }
 }

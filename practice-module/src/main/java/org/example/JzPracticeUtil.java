@@ -5,6 +5,7 @@ import org.example.model.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -219,7 +220,71 @@ public class JzPracticeUtil {
      */
     public static int NumberOf1(int n) {
         // 转字符串做法
-        String biv = Integer.toBinaryString(n);
-        return (int)biv.chars().filter(c -> c=='1').count();
+//        String biv = Integer.toBinaryString(n);
+//        return (int)biv.chars().filter(c -> c=='1').count();
+        // 移位法
+//        int count = 0;
+//        int m = 1;
+//        while(m != 0){
+//            if((m&n)!=0) ++count;
+//            m<<=1;
+//        }
+//        return count;
+
+        // -1与
+        int count=0;
+        while (n!=0){
+            ++count;
+            n = n & (n-1);
+        }
+        return count;
+    }
+
+    /**
+     * JZ12 数值的整数次方
+     * @param base
+     * @param exponent
+     * @return
+     */
+    public static double Power(double base, int exponent) {
+        // 递归处理
+//        if(exponent==0) return 1;
+//        else if(exponent > 0) return base * Power(base, exponent-1);
+//        else return (1/base) * Power(base, exponent+1);
+
+        // 循环求解
+        if(exponent==0) return 1;
+        if(base==0) return 0;
+        if(exponent < 0) {
+            base = 1/base;
+            exponent = -exponent;
+        }
+        double res = base;
+        for (int i = 1; i < exponent; i++) {
+            res *= base;
+        }
+        return res;
+    }
+
+    /**
+     * JZ13 调整数组顺序使奇数位于偶数前面
+     * [1,2,3,4,5]
+     * [1,3,5,2,4]
+     * @param array
+     * @return
+     */
+    public int[] reOrderArray (int[] array) {
+        // 双遍历取数法 时间复杂度O(2n),额外空间复杂度O(n)
+        int[] res = new int[array.length];
+        int cur = 0;
+        for (int i = 0; i < array.length; i++) {
+            if(array[i]%2==1) res[cur++] = array[i];
+        }
+        for (int i = 0; i < array.length; i++) {
+            if(array[i]%2==0) res[cur++] = array[i];
+        }
+        return res;
+
+
     }
 }
