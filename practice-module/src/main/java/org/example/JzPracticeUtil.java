@@ -284,7 +284,120 @@ public class JzPracticeUtil {
             if(array[i]%2==0) res[cur++] = array[i];
         }
         return res;
+    }
 
+    /**
+     * JZ14 链表中倒数最后k个结点
+     * @param pHead
+     * @param k
+     * @return
+     */
+    public ListNode FindKthToTail (ListNode pHead, int k) {
+        // 链表处理
+//        if(pHead==null||k==0) return null;
+//        List<ListNode> ls = new ArrayList<>();
+//        while (pHead!=null){
+//            ls.add(pHead);
+//            pHead = pHead.next;
+//        }
+//        return ls.size()-k >= 0 ? ls.get(ls.size()-k):null;
 
+        // 双指针
+        if(pHead==null||k==0) return null;
+        ListNode pre = pHead;
+        int d = 0;
+        while (pHead!=null){
+            pHead = pHead.next;
+            if(d<k) ++d;
+            else pre = pre.next;
+        }
+        if(d < k) return null;
+        return pre;
+    }
+
+    /**
+     * JZ15 反转链表
+     * @param head
+     * @return
+     */
+    public ListNode ReverseList(ListNode head) {
+        return reverseListInt(head, null);
+    }
+
+    private ListNode reverseListInt(ListNode head, ListNode newHead) {
+        if (head == null)
+            return newHead;
+        ListNode next = head.next;
+        head.next = newHead;
+        return reverseListInt(next, head);
+    }
+
+    /**
+     * JZ16 合并两个排序的链表
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public ListNode Merge(ListNode list1,ListNode list2) {
+        // 递归
+//        if(list1 == null) return list2;
+//        else if(list2 == null) return  list1;
+//        else if(list1.val < list2.val) {
+//            list1.next = Merge(list1.next, list2);
+//            return list1;
+//        } else {
+//            list2.next = Merge(list1, list2.next);
+//            return list2;
+//        }
+
+        // 单链表
+        List<ListNode> ls = new ArrayList<>();
+        while (list1 == null && list2 == null){
+            if(list1.val < list2.val) {
+                ls.add(list1);
+                list1 = list1.next;
+            } else {
+                ls.add(list2);
+                list2 = list2.next;
+            }
+        }
+        for (int i = 0; i < ls.size()-1; i++) {
+            ls.get(i).next = ls.get(i+1);
+        }
+        return ls.get(0);
+    }
+
+    /**
+     * JZ17 树的子结构
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+        if(root1==null||root2==null) return false;
+        return check(root1, root2)||HasSubtree(root1.left, root2)||HasSubtree(root1.right, root2);
+    }
+
+    private boolean check(TreeNode root1,TreeNode root2){
+        if(root2==null) return true;
+        if(root1==null || root1.val != root2.val) return false;
+        return check(root1.left, root2.left) && check(root1.right, root2.right);
+    }
+
+    /**
+     * JZ18 二叉树的镜像
+     * @param pRoot
+     * @return
+     */
+    public TreeNode Mirror (TreeNode pRoot) {
+        // write code here
+        if(pRoot == null) return pRoot;
+        if(pRoot.left==null && pRoot.right==null) return pRoot;
+        TreeNode tnode = pRoot.left;
+        pRoot.left = pRoot.right;
+        pRoot.right = tnode;
+        Mirror(pRoot.left);
+        Mirror(pRoot.right);
+        return pRoot;
     }
 }

@@ -9,6 +9,29 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class TreePracticeUtil {
 
     /**
+     * 层级遍历生成树
+     * @param vals
+     * @return
+     */
+    public static TreeNode generateTreeByArray(Integer[] vals){
+        if(vals==null || vals.length==0) return null;
+        TreeNode[] ts = new TreeNode[vals.length];
+        ts[0] = new TreeNode(vals[0]);
+        TreeNode tmp;
+        for (int i = 1; i < vals.length; i++) {
+            if(vals[i] != null) tmp = new TreeNode(vals[i]);
+            else tmp = null;
+            ts[i] = tmp;
+            if(i%2==1){
+                ts[i/2].left=vals[i]==null?null:tmp;
+            } else {
+                ts[i/2-1].right=vals[i]==null?null:tmp;
+            }
+        }
+        return ts[0];
+    }
+
+    /**
      * 104. 二叉树的最大深度
      * @param root
      * @return
@@ -80,4 +103,180 @@ public class TreePracticeUtil {
         }
         return res;
     }
+
+    /**
+     * 98. 验证二叉搜索树
+     * @param root
+     * @return
+     */
+    Integer curNum;
+    public boolean isValidBST(TreeNode root) {
+        // 中序遍历，比大小
+        if(root==null) return true;
+        if(!isValidBST(root.left)) return false;
+        if(curNum!=null&&curNum >= root.val) return false;
+        curNum = root.val;
+        return isValidBST(root.right);
+    }
+
+    // 中序遍历
+    public static LinkedList tns = new LinkedList();
+    public static void ldr(TreeNode root){
+        if(root==null) return;
+        ldr(root.left);
+        tns.add(root);
+        ldr(root.right);
+    }
+
+    /**
+     * 700. 二叉搜索树中的搜索
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode searchBST(TreeNode root, int val) {
+        // 全遍历搜索，没有利用搜索树的属性
+//        if(root==null) return null;
+//        if(root.val == val) return root;
+//        TreeNode node = searchBST(root.left, val);
+//        if(node==null) return searchBST(root.right, val);
+//        return node;
+        // 优化处理
+        if(root==null) return null;
+        if(root.val == val) return root;
+        if(val < root.val) return searchBST(root.left, val);
+        else return searchBST(root.right, val);
+    }
+
+    /**
+     * 450. 删除二叉搜索树中的节点
+     * @param root
+     * @param key
+     * @return
+     */
+    public static TreeNode deleteNode(TreeNode root, int key) {
+        // 左旋，和题目用例不符，应该也是ok的
+//        TreeNode cur = root;
+//        TreeNode pre = null;
+//        boolean isLeft = true;
+//        while (cur!=null){
+//            if(key > cur.val) {
+//                pre = cur;
+//                cur = cur.right;
+//                isLeft = false;
+//            } else if(key < cur.val) {
+//                pre = cur;
+//                cur = cur.left;
+//                isLeft = true;
+//            } else {
+//                if(pre==null){
+//                    root = turnLeft(cur);
+//                    break;
+//                }
+//                if(isLeft){
+//                    pre.left = turnLeft(cur);
+//                } else {
+//                    pre.right = turnLeft(cur);
+//                }
+//                break;
+//            }
+//        }
+//        return root;
+
+        // 升级处理
+        TreeNode cur = root;
+        TreeNode pre = null;
+        boolean isLeft = true;
+        while (cur!=null){
+            if(key > cur.val) {
+                pre = cur;
+                cur = cur.right;
+                isLeft = false;
+            } else if(key < cur.val) {
+                pre = cur;
+                cur = cur.left;
+                isLeft = true;
+            } else {
+                if(pre==null){
+                    root = upGrade(cur);
+                    break;
+                }
+                if(isLeft){
+                    pre.left = upGrade(cur);
+                } else {
+                    pre.right = upGrade(cur);
+                }
+                break;
+            }
+        }
+        return root;
+    }
+    // 左旋转处理
+    public static TreeNode turnLeft(TreeNode delNode){
+        TreeNode root;
+        if(delNode.right!=null) {
+            root = delNode.right;
+            if(delNode.left!=null){
+                TreeNode cur = root;
+                while (cur.left!=null){
+                    cur = cur.left;
+                }
+                cur.left = delNode.left;
+            }
+        } else {
+            root = delNode.left;
+        }
+        return root;
+    }
+    // 顺位升级，将叶子节点晋升为根节点，符合题目用例要求
+    public static TreeNode upGrade(TreeNode delNode){
+        TreeNode root;
+        if(delNode.right!=null) {
+            TreeNode cur = delNode.right;
+            TreeNode pre = null;
+            while (cur.left!=null) {
+                pre = cur;
+                cur = cur.left;
+            }
+            if(pre==null) {
+                cur.left = delNode.left;
+                root = cur;
+            } else {
+                pre.left = upGrade(cur);
+                cur.right = delNode.right;
+                cur.left = delNode.left;
+                root = cur;
+            }
+        } else {
+            root = delNode.left;
+        }
+        return root;
+    }
+
+    /**
+     * 110. 平衡二叉树
+     * @param root
+     * @return
+     */
+    public static boolean isBalanced(TreeNode root) {
+        // 自顶向下遍历高度
+//        if(root==null) return true;
+//        return Math.abs(height(root.left)-height(root.right)) <= 1&&isBalanced(root.left)&&isBalanced(root.right);
+        return height(root) >= 0;
+    }
+
+    public static int height(TreeNode root){
+        // 自顶向下求高
+//        if(root==null) return 0;
+//        else return 1 + Math.max(height(root.left), height(root.right));
+        // 自底向上处理
+        if(root == null) return 0;
+        int leftHeight = height(root.left);
+        int rightHeight=height(root.right);
+        if(leftHeight==-1||rightHeight==-1||Math.abs(leftHeight-rightHeight)>1){
+            return -1;
+        }
+        return 1+Math.max(leftHeight, rightHeight);
+    }
+
 }
