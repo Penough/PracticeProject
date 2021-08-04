@@ -279,4 +279,46 @@ public class TreePracticeUtil {
         return 1+Math.max(leftHeight, rightHeight);
     }
 
+    /**
+     * 222. 完全二叉树的节点个数
+     * @param root
+     * @return
+     */
+    public static int countNodes(TreeNode root) {
+        // 遍历数节点，未使用到完全二叉树性质
+//        if(root==null) return 0;
+//        return 1 + countNodes(root.left) + countNodes(root.right);
+        // 利用完全二叉树性质，对递归进行优化
+        if(root==null) return 0;
+        int leftHeight = countLeftHeight(root.left);
+        int rightHeight = countLeftHeight(root.right);
+        if(leftHeight==rightHeight){
+            return (1 << leftHeight) + countNodes(root.right);
+        } else {
+            return (1 << rightHeight) + countNodes(root.left);
+        }
+    }
+
+    public static int countLeftHeight(TreeNode root){
+        int count = 0;
+        if(root == null) return count;
+        while (root!=null){
+            ++count;
+            root = root.left;
+        }
+        return count;
+    }
+
+    /**
+     * 814. 二叉树剪枝
+     * @param root
+     * @return
+     */
+    public TreeNode pruneTree(TreeNode root) {
+        if(root==null) return null;
+        if(root.left!=null) root.left = pruneTree(root.left);
+        if(root.right!=null) root.right = pruneTree(root.right);
+        if(root.val==0&&root.left==null&&root.right==null) return null;
+        return root;
+    }
 }
