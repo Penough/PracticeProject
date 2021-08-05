@@ -114,26 +114,79 @@ public class StrPracticeUtil {
      * @return
      */
     public static boolean isMatch(String s, String p){
-        String[] ps = p.split("\\*");
-//        int st = 0;
-//        for (int i = 0; i < ps.length; i++) {
-//            s.indexOf(ps[i].charAt(),st).substring(st)
-//            st = match(, ps[i]);
-//            if(st==-1) return false;
+        // DP，状态转移矩阵
+//        final int m = s.length(),n = p.length();
+//        boolean[][] dp = new boolean[m+1][n+1];
+//        dp[0][0] = true;
+//        for (int i = 1; i <= n; i++) {
+//            if(p.charAt(i-1)=='*') dp[0][i] = true;
+//            else break;
 //        }
-        return true;
-    }
-    public static int match(String s, String p){
-        int scur=0, pcur=0;
-        while (pcur < p.length()){
-            char c = p.charAt(pcur);
-            if(c==s.charAt(scur)||c=='?') {
-                scur++;pcur++;
+//        for (int i = 1; i < dp.length; i++) {
+//            for (int j = 1; j < dp[i].length; j++) {
+//                if (p.charAt(j - 1) == '*') {
+//                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+//                } else if (p.charAt(j - 1) == '?' || s.charAt(i - 1) == p.charAt(j - 1)) {
+//                    dp[i][j] = dp[i - 1][j - 1];
+//                }
+//            }
+//        }
+//        return dp[m][n];
+
+        // 贪心算法
+        // 先从尾部匹配，剩下的模式串就是以*结尾，或者没有*了
+        // 没有*直接匹配即可，如果前串*结尾，则使用从头匹配到right
+        int sRight = s.length(), pRight = p.length();
+        while (sRight > 0 && pRight > 0 && p.charAt(pRight - 1) != '*') {
+            if (charMatch(s.charAt(sRight - 1), p.charAt(pRight - 1))) {
+                --sRight;
+                --pRight;
             } else {
-                return -1;
+                return false;
             }
         }
-        return scur;
+        // 如果魔偶是串最终到0，则都归0处理
+        if (pRight == 0) {
+            return sRight == 0;
+        }
+        // 匹配到idx
+        int sIndex = 0, pIndex = 0;
+        // 匹配到*时记录
+        int sRecord = -1, pRecord = -1;
+
+        while (sIndex < sRight && pIndex < pRight) {
+            if (p.charAt(pIndex) == '*') {
+                // 匹配到*模式串，跳过，记录后续位置
+                ++pIndex;
+                sRecord = sIndex;
+                pRecord = pIndex;
+            } else if (charMatch(s.charAt(sIndex), p.charAt(pIndex))) {
+                // 正常匹配，匹配位置后移
+                ++sIndex;
+                ++pIndex;
+            } else if (sRecord != -1 && sRecord + 1 < sRight) {
+                // 如果记录位置没到未匹配尾部，同时记录过sRecord，即匹配到过*
+                // 且不匹配，那么srecord往后移，重新记录si和pi
+                ++sRecord;
+                sIndex = sRecord;
+                pIndex = pRecord;
+            } else {
+                return false;
+            }
+        }
+
+        return allStars(p, pIndex, pRight);
+    }
+    public static boolean allStars(String str, int left, int right) {
+        for (int i = left; i < right; ++i) {
+            if (str.charAt(i) != '*') {
+                return false;
+            }
+        }
+        return true;
     }
 
+    public static boolean charMatch(char u, char v) {
+        return u == v || v == '?';
+    }
 }

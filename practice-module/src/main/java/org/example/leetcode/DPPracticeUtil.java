@@ -9,6 +9,25 @@ import java.util.List;
  */
 public class DPPracticeUtil {
     /**
+     * 509. 斐波那契数
+     * @param n
+     * @return
+     */
+    public int fib(int n) {
+        // 递归
+//        if(n<2) return n;
+//        return fib(n-1)+fib(n-2);
+        // DP
+        if(n<2) return n;
+        int pre=0,res=1,tmp;
+        for (int i = 1; i < n; i++) {
+            tmp = res;
+            res += pre;
+            pre = tmp;
+        }
+        return res;
+    }
+    /**
      * 70. 爬楼梯
      * @param n
      * @return
