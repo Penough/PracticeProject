@@ -115,12 +115,12 @@ public class StrPracticeUtil {
      */
     public static boolean isMatch(String s, String p){
         String[] ps = p.split("\\*");
-        int st = 0;
-        for (int i = 0; i < ps.length; i++) {
-            s.indexOf(ps[i].charAt(),st).substring(st)
-            st = match(, ps[i]);
-            if(st==-1) return false;
-        }
+//        int st = 0;
+//        for (int i = 0; i < ps.length; i++) {
+//            s.indexOf(ps[i].charAt(),st).substring(st)
+//            st = match(, ps[i]);
+//            if(st==-1) return false;
+//        }
         return true;
     }
     public static int match(String s, String p){

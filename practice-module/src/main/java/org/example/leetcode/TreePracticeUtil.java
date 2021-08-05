@@ -14,21 +14,43 @@ public class TreePracticeUtil {
      * @return
      */
     public static TreeNode generateTreeByArray(Integer[] vals){
+        // 完全二叉树生成方式
+//        if(vals==null || vals.length==0) return null;
+//        TreeNode[] ts = new TreeNode[vals.length];
+//        ts[0] = new TreeNode(vals[0]);
+//        TreeNode tmp;
+//        for (int i = 1; i < vals.length; i++) {
+//            if(vals[i] != null) tmp = new TreeNode(vals[i]);
+//            else tmp = null;
+//            ts[i] = tmp;
+//            if(i%2==1) ts[i/2].left=tmp;
+//            else ts[i/2-1].right=tmp;
+//        }
+//        return ts[0];
+
+        // 用队列的方式处理
         if(vals==null || vals.length==0) return null;
-        TreeNode[] ts = new TreeNode[vals.length];
-        ts[0] = new TreeNode(vals[0]);
-        TreeNode tmp;
-        for (int i = 1; i < vals.length; i++) {
-            if(vals[i] != null) tmp = new TreeNode(vals[i]);
-            else tmp = null;
-            ts[i] = tmp;
-            if(i%2==1){
-                ts[i/2].left=vals[i]==null?null:tmp;
-            } else {
-                ts[i/2-1].right=vals[i]==null?null:tmp;
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        TreeNode root = new TreeNode(vals[0]);
+        queue.add(root);
+        int cur = 1;
+        Integer tmpv;
+        TreeNode tc,tmpNode;
+        while (!queue.isEmpty() && cur<vals.length) {
+            tc = queue.poll();
+            if((tmpv=vals[cur++])!=null){
+                tmpNode = new TreeNode(tmpv);
+                tc.left = tmpNode;
+                queue.add(tmpNode);
+            }
+            if(cur >= vals.length) break;
+            if((tmpv=vals[cur++])!=null){
+                tmpNode = new TreeNode(tmpv);
+                tc.right = tmpNode;
+                queue.add(tmpNode);
             }
         }
-        return ts[0];
+        return root;
     }
 
     /**
