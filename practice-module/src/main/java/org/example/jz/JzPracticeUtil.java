@@ -1,4 +1,4 @@
-package org.example;
+package org.example.jz;
 
 import org.example.model.ListNode;
 import org.example.model.TreeNode;

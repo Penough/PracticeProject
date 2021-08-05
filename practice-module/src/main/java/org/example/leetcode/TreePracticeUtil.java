@@ -1,4 +1,4 @@
-package org.example;
+package org.example.leetcode;
 
 import org.example.model.TreeNode;
 import sun.awt.image.ImageWatched;

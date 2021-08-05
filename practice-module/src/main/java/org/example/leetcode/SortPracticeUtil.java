@@ -1,4 +1,4 @@
-package org.example;
+package org.example.leetcode;
 
 /**
  * 排序练习工具

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.leetcode;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,6 +102,38 @@ public class StrPracticeUtil {
             return i-j;
         }
         return -1;
+    }
+
+    /**
+     * 44. 通配符匹配
+     * 字符串通配匹配
+     * *任意字符串
+     * ？单个字符
+     * @param s
+     * @param p
+     * @return
+     */
+    public static boolean isMatch(String s, String p){
+        String[] ps = p.split("\\*");
+        int st = 0;
+        for (int i = 0; i < ps.length; i++) {
+            s.indexOf(ps[i].charAt(),st).substring(st)
+            st = match(, ps[i]);
+            if(st==-1) return false;
+        }
+        return true;
+    }
+    public static int match(String s, String p){
+        int scur=0, pcur=0;
+        while (pcur < p.length()){
+            char c = p.charAt(pcur);
+            if(c==s.charAt(scur)||c=='?') {
+                scur++;pcur++;
+            } else {
+                return -1;
+            }
+        }
+        return scur;
     }
 
 }
