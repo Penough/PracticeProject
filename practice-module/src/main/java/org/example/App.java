@@ -19,8 +19,8 @@ public class App
 //        String p = "ab?*de";
 //        System.err.println(StrPracticeUtil.isMatch(s, p));
 
-        int[] array = {7,6,3,4,4,2,3,32,5,4,6,67,2};
-        array = SortPracticeUtil.mergeSort(array);
+        int[] array = {4,6,8,5,9};
+        array = SortPracticeUtil.heapSort(array);
         boolean a = 1==1;
     }
 }

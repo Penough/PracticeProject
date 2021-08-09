@@ -123,4 +123,63 @@ public class SortPracticeUtil {
         }
         return result;
     }
+
+    /**
+     * 希尔排序
+     * @return
+     */
+    public static int[] shellSort(int[] array){
+//        if(array==null||array.length<2) return array;
+        int gap = array.length/2;
+        while (gap > 0){
+            for (int i = 0; i < array.length-gap; i++) {
+                if(array[i] > array[i+gap]){
+                    int tmp = array[i];
+                    array[i] = array[i+gap];
+                    array[i+gap] = tmp;
+                }
+            }
+            gap--;
+        }
+        return array;
+    }
+
+    /**
+     * 推排序（利用二叉树性质排序）
+     * @param arr
+     * @return
+     */
+    public static int[] heapSort(int[] arr){
+        //1.构建大顶堆
+        for(int i=arr.length/2-1; i>=0; i--){
+            //从第一个非叶子结点从下至上，从右至左调整结构
+            maximumHeap(arr,i,arr.length);
+        }
+        //2.调整堆结构+交换堆顶元素与末尾元素
+        for(int j=arr.length-1; j>0; j--){
+            swap(arr,0, j);//将堆顶元素与末尾元素进行交换
+            maximumHeap(arr,0, j);//重新对堆进行调整
+        }
+        return arr;
+    }
+    public static void maximumHeap(int[] arr, int i, int len){
+        int temp = arr[i];//先取出当前元素i
+        for(int k=i*2+1;k<len;k=k*2+1){//从i结点的左子结点开始，也就是2i+1处开始
+            if(k+1<len && arr[k]<arr[k+1]){//如果左子结点小于右子结点，k指向右子结点
+                k++;
+            }
+            if(arr[k] >temp){//如果子节点大于父节点，将子节点值赋给父节点（不用进行交换）
+                arr[i] = arr[k];
+                i = k;
+            }else{
+                break;
+            }
+        }
+        arr[i] = temp;//将temp值放到最终的位置
+    }
+    public static void swap(int[] array, int i, int j){
+        int tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+    }
 }
