@@ -1,8 +1,6 @@
 package org.example;
 
-import org.example.leetcode.StrPracticeUtil;
-import org.example.leetcode.TreePracticeUtil;
-import org.example.model.TreeNode;
+import org.example.sort.SortPracticeUtil;
 
 /**
  * Hello world!
@@ -17,8 +15,12 @@ public class App
 //        TreeNode root = TreePracticeUtil.generateTreeByArray(new Integer[]{1,
 //        2,3,null,null,4,5,6,7});
 //        TreePracticeUtil.deleteNode(root, 140);
-        String s = "abcde";
-        String p = "ab?*de";
-        System.err.println(StrPracticeUtil.isMatch(s, p));
+//        String s = "abcde";
+//        String p = "ab?*de";
+//        System.err.println(StrPracticeUtil.isMatch(s, p));
+
+        int[] array = {6,4,2,1,6,2,45,7,2};
+        SortPracticeUtil.quickSort(array);
+        boolean a = 1==1;
     }
 }

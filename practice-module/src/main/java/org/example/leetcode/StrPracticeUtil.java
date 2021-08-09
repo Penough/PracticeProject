@@ -189,4 +189,64 @@ public class StrPracticeUtil {
     public static boolean charMatch(char u, char v) {
         return u == v || v == '?';
     }
+
+    /**
+     * 5. 最长回文子串
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s) {
+        // dp,状态转移矩阵
+//        final int len = s.length();
+//        if(len<2) return s;
+//        int maxLen = 1;
+//        int begin = 0;
+//        boolean[][] dp = new boolean[len][len];
+//        for (int i = 0; i < len; i++)  dp[i][i] = true;
+//        char[] charArray = s.toCharArray();
+//        for (int l = 2; l < len; l++) {
+//            for (int i = 0; i < len; i++) {
+//                int j = l + i - 1;
+//                if(j >= len) break;
+//                if(charArray[i]!=charArray[j]){
+//                    dp[i][j] = false;
+//                } else {
+//                    if(charArray[i]==charArray[j]) dp[i][j] = dp[i+1][j-1];
+//                    else if(j - i <3) dp[i][j] = true;
+//                }
+//                if (dp[i][j] && j - i + 1 > maxLen) {
+//                    maxLen = j - i + 1;
+//                    begin = i;
+//                }
+//            }
+//        }
+//        return s.substring(begin, begin + maxLen);
+
+        // 中心扩散
+        if(s==null&&s.length()<2) return s;
+        char[] cAry = s.toCharArray();
+        int len = cAry.length;
+        int maxLen = 1,cur=0, mid = 0;
+        while(cur+maxLen/2<len){
+            int len1 = expand(cAry, cur, cur);
+            int len2 = expand(cAry, cur, cur+1);
+            int max = Math.max(len1, len2);
+            if(max > maxLen){
+                maxLen = max;
+                mid = cur;
+            }
+            cur++;
+        }
+        int start = mid - (maxLen - 1) / 2;
+        int end = mid + maxLen / 2;
+        return s.substring(start, end+1);
+    }
+
+    public static int expand(char[] cAry, int left, int right){
+        while(left>=0&&right<cAry.length&&cAry[left]==cAry[right]){
+            left--;
+            right++;
+        }
+        return right-left-1;
+    }
 }
