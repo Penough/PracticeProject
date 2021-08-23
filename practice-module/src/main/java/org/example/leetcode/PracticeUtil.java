@@ -3,6 +3,7 @@ package org.example.leetcode;
 import org.example.model.ListNode;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PracticeUtil {
     /**
@@ -350,5 +351,30 @@ public class PracticeUtil {
             System.err.print(ls[i]+";");
         }
         System.err.println();
+    }
+
+    /**
+     * 16. 最接近的三数之和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int threeSumClosest(int[] nums, int target) {
+        // 排序+双指针
+        Arrays.sort(nums);
+        int cur=0;
+        int res=nums[cur]+nums[1]+nums[2];
+        while(cur < nums.length-2){
+            int left=cur+1, right=nums.length-1;
+            while(left < right) {
+                int sum = nums[cur] + nums[left] + nums[right];
+                if (Math.abs(target - sum) <= Math.abs(target - res)) res = sum;
+                if (sum < target) left++;
+                else if (sum > target) right--;
+                else return res;
+            }
+            cur++;
+        }
+        return res;
     }
 }

@@ -145,7 +145,7 @@ public class StrPracticeUtil {
                 return false;
             }
         }
-        // 如果魔偶是串最终到0，则都归0处理
+        // 如模式串最终到0，则都归0处理
         if (pRight == 0) {
             return sRight == 0;
         }
