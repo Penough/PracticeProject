@@ -377,4 +377,32 @@ public class PracticeUtil {
         }
         return res;
     }
+
+    /**
+     * 11. 盛最多水的容器
+     * @param height
+     * @return
+     */
+    public static int maxArea(int[] height) {
+        // 穷举
+//        int cap = 0;
+//        for (int i = 0; i < height.length-1; i++) {
+//            for (int j = i+1; j < height.length; j++) {
+//                int tmp = Math.min(height[i], height[j]) * (j-i);
+//                if(tmp > cap) cap = tmp;
+//            }
+//        }
+//        return cap;
+
+        // 双指针
+        int left = 0, right = height.length-1;
+        int cap = 0;
+        while(left < right){
+            int tmp = Math.min(height[left], height[right]) * (right-left);
+            if(tmp>cap) cap = tmp;
+            if(height[left] < height[right]) left++;
+            else right--;
+        }
+        return cap;
+    }
 }

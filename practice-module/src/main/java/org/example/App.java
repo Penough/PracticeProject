@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.leetcode.PracticeUtil;
 import org.example.sort.SortPracticeUtil;
 
 /**
@@ -19,8 +20,10 @@ public class App
 //        String p = "ab?*de";
 //        System.err.println(StrPracticeUtil.isMatch(s, p));
 
-        int[] array = {4,6,8,5,9};
-        array = SortPracticeUtil.heapSort(array);
-        boolean a = 1==1;
+//        int[] array = {4,6,8,5,9};
+//        array = SortPracticeUtil.heapSort(array);
+//        boolean a = 1==1;
+        int[] array = {4,3,2,1,3};
+        System.err.println(PracticeUtil.maxArea(array));
     }
 }
